@@ -1,0 +1,207 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+   	}
+    body {
+    	
+      font-family: 'Noto Sans KR', sans-serif;
+
+    }
+#user_id{
+	width: 69%;}
+#email{
+	width: 35%;
+}
+#url{
+	width: 40%;
+}
+
+#workNumber{
+	width: 40%;
+}
+#nickName{
+	width: 40%;
+
+}
+#phone2{
+	width: 40%;
+}
+#biz_num{
+	width: 60%;
+}
+table{
+	margin: 0 auto;
+
+}
+
+table, th, td{
+	border: 0px solid black;
+	border-collapse: collapse;
+	padding: 5px 10px;
+}
+
+
+
+h2{
+text-align: center;
+
+}
+h4{
+	padding: 0% 0% 0% 25%;
+	color: blue;
+}
+
+h6{
+	padding: 0% 0% 0% 25%;
+	color: gray;
+}
+#des{
+	padding: 0%;
+	color: gray;
+}
+#profile{
+	width: 120px;
+}
+
+#essential{
+	text-align: right;
+	color: gray;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: bold; 
+	font-size: 12px;
+	padding: 0% 0% 0% 62%;
+	
+}
+
+/*버튼꾸미기!!!  */
+  			.test_btn1{
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;  
+            
+            margin-right:-4px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 13px;
+            
+        }
+       
+        .test_btn1{
+            border: 1px solid #227cff;
+            background-color: #227cff;
+            color: white;
+            padding: 5px 10px 5px 10px;
+            font: 'Noto Sans KR', sans-serif;
+        }
+        .test_btn1:hover{
+            color:white;
+            background-color: #3788fd;
+        }
+  		.test_btn2{
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;  
+            
+            margin-right:6px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 15px;
+            
+        }
+       
+        .test_btn2{
+            border: 1px solid #227cff;
+            background-color: #227cff;
+            color: white;
+            padding: 6px 22px 6px 22px;
+            font: 'Noto Sans KR', sans-serif;
+        }
+        .test_btn2:hover{
+            color:white;
+            background-color: #3788fd;
+        }
+        
+        .preview-edit{
+        	border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;  
+            
+            margin-right:-4px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 13px;
+        
+        }
+        
+        
+      		#findPost{
+            border-top-left-radius: 7px;
+            border-bottom-left-radius: 7px;
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;  
+            
+            margin-right:6px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 13px;
+             
+            
+        }
+       
+        #findPost{
+            border: 1px solid #227cff;
+            background-color: #227cff;
+            color: white;
+            padding: 6px 14px 6px 13px;
+            font: 'Noto Sans KR', sans-serif;
+        }
+        #findPost:hover{
+            color:white;
+            background-color: #3788fd;
+        }
+        
+        
+   
+         .preview-edit{
+			
+            color: white;
+            padding: 5px 10px 5px 10px;
+            font: 'Noto Sans KR', sans-serif;
+            width: 45px;
+        
+        }
+        .preview-edit:hover{
+            color:white;
+            background-color: #3788fd;
+        }
+        
+       .preview-de{
+            
+            
+            margin-right:-5px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 15px;
+            
+        }
+       
+        .preview-de{
+            
+            color: white;
+            padding: 5px 10px 5px 10px;
+            font: 'Noto Sans KR', sans-serif;
+            width: 45px;
+        }
+        .preview-de:hover{
+            cursor:pointer;
+        }
+        
+        
+
+	
+        
+  
+
+

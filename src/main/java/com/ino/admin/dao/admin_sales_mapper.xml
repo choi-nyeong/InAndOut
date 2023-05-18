@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.admin.dao.AdminSalesDAO">
+
+
+
+	<select id="stotalCount" parameterType="String" resultType ="int">
+		SELECT COUNT (sales_no) FROM sales
+	</select>
+
+	<select id="stotalCountSearch" parameterType="String" resultType ="int">
+		SELECT COUNT (sales_no) FROM sales s
+		JOIN user u
+		WHERE u.user_id = #{search} OR u.nickname = #{search} OR s.subject = #{search}
+	</select>
+
+
+	<select id="slist" resultType="com.ino.admin.dto.AdminSalesDTO">
+		select s.sales_no , s.subject , s.user_id ,u.nickname , s.sales_state , s.date , s.blind
+		from sales s
+		join user u on u.user_id = s.user_id 
+		LIMIT 10 OFFSET #{offset}
+	</select>	
+	
+	<select id="slistSearch" parameterType="hashmap" resultType="com.ino.admin.dto.AdminSalesDTO">
+		select s.sales_no , s.subject , s.user_id ,u.nickname , s.sales_state , s.date 
+		from sales s
+		join user u on u.user_id = s.user_id 
+    WHERE CONCAT(s.user_id, u.nickname,s.subject) LIKE CONCAT('%', #{search}, '%')
+    LIMIT 10 OFFSET #{offset}
+	</select>
+	
+	<!-- 판매글 블라인드 -->
+	<update id="sblind" parameterType="java.lang.String">
+		update sales set blind = 1 where blind = 0 and sales_no = #{sales_no}
+	</update>
+	
+	
+	<!-- 판매글 블라인드 해제 -->
+	<update id="snoblind" parameterType="java.lang.String">
+		update sales set blind = 0 where blind = 1 and sales_no = #{sales_no}
+	</update>	
+	<!-- 판매글 히스토리 작성 -->
+<!-- 	<insert id="history_sblind" parameterType="hashmap">
+		insert into report_history(sales_no, report_content,report_id)
+		VALUES (#{sales_no},#{report_content},#{report_id})
+	
+	</insert> -->
+	
+	
+	<!--  판매글 히스토리 페이지  -->
+	<select id="shistory" resultType="com.ino.admin.dto.AdminSalesDTO">
+		select *from sales s 
+		left join report r on s.sales_no = r.report_whom
+		where s.sales_no = #{sales_no}
+	</select>		
+	
+	
+	
+</mapper>

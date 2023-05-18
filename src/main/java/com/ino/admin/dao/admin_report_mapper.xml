@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.admin.dao.AdminReportDAO">
+
+
+	<select id="utotalCount" parameterType="String" resultType ="int">
+		SELECT COUNT (report_no) FROM report
+		where report_no IS NOT null and cate_no = 's003'
+	</select>
+
+
+	<select id="ulist" resultType="com.ino.admin.dto.AdminReportDTO">
+		select u2.user_id, u2.nickname, d.user_div_name, u2.user_state, r.report_no, u2.nickname
+		from user u 
+		left join report r on u.user_id = r.user_id
+		left join `user` u2 on u2.user_id = r.report_whom
+		left join user_div d on u2.user_div = d.user_div
+		where r.report_no IS NOT null and r.cate_no = 's003'
+		LIMIT 10 OFFSET #{offset}
+	</select>
+
+	<select id="stotalCount" parameterType="String" resultType ="int">
+		SELECT COUNT (report_no) FROM report
+		where report_no IS NOT null and cate_no = 's002'
+	</select>
+
+
+	<select id="slist" resultType="com.ino.admin.dto.AdminReportDTO">
+		select r.report_no , s.subject , s.user_id , r.user_id , r.report_date
+		from sales s 
+		left join report r on s.sales_no = r.report_whom 
+		where r.report_no IS NOT null and r.cate_no = 's002'
+		LIMIT 10 OFFSET #{offset}
+	</select>
+	
+	<select id="gtotalCount" parameterType="String" resultType ="int">
+		SELECT COUNT (report_no) FROM report
+		where report_no IS NOT null and cate_no = 's001'
+	</select>
+
+
+	<select id="glist" resultType="com.ino.admin.dto.AdminReportDTO">
+		select r.report_no , g.gallery_subject , g.user_id , r.report_date,r.report_state, g.gallery_no
+		from gallery g
+		left join report r on r.report_whom = g.gallery_no 
+		where r.report_no IS NOT null and r.cate_no = 's001'
+		LIMIT 10 OFFSET #{offset}
+	</select>	
+	
+<select id="ureportdetail" resultType="com.ino.admin.dto.AdminReportDTO">
+		select r.report_whom, u2.nickname,r.user_id,r.report_date,r.report_reason,r.report_state, p.new_photo_name, r.report_no
+		from user u 
+		left join report r on u.user_id = r.user_id
+		left join user u2 on u2.user_id = r.report_whom
+		left join photo p on u2.user_id = p.photo_div
+		where r.report_no =#{report_no}
+</select>
+
+<select id="sreportdetail" resultType="com.ino.admin.dto.AdminReportDTO">
+		select DISTINCT r.report_whom,rh.report_id,r.user_id,r.report_date,r.report_reason,r.report_state,s.blind, r.report_no
+		from report r
+		left join sales s on s.sales_no = r.report_whom
+		left join report_history rh on r.report_no = rh.report_no
+		where r.report_no = #{report_no};
+</select>
+
+<select id="greportdetail" resultType="com.ino.admin.dto.AdminReportDTO">
+		select DISTINCT r.report_whom,rh.report_id,r.user_id,r.report_date,r.report_reason,r.report_state,g.blind, r.report_no
+		from report r
+		left join gallery g  on g.gallery_no = r.report_whom
+		left join report_history rh on r.report_no = rh.report_no
+		where r.report_no = #{report_no};
+</select>
+
+<update id="gblindchange" parameterType="String">
+    UPDATE report r
+    JOIN gallery g ON r.report_whom = g.gallery_no
+    SET r.report_state = '완료',
+        g.blind = 1
+    WHERE r.report_state = '대기'
+    AND g.blind = 0
+    AND report_no = #{report_no}
+</update>
+
+<update id="ublindchange" parameterType="String">
+    UPDATE report r
+    JOIN user u ON r.report_whom = u.user_id
+    SET r.report_state = '완료',
+        u.user_state = '블록'
+    WHERE r.report_state = '대기'
+    AND u.user_state = '정상'
+    AND r.report_no = #{report_no}
+</update>
+
+<!-- 블라인드 반려 기능 통일 -->
+<update id="blindnochange" parameterType="String">
+		UPDATE report SET report_state = '완료'
+		WHERE report_state = '대기'
+		and report_no= #{report_no};
+
+
+</update>
+
+
+<!-- 블라인드 히스토리 작성 기능 통일  -->
+<insert id="blind_history" parameterType="hashmap">
+INSERT INTO report_history (report_no,report_id,report_content)
+VALUES (#{report_no}, #{report_id}, #{report_content})
+
+</insert>	
+
+</mapper>

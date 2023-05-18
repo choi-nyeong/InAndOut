@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- xml을 자바에서 쓰기 위해 연결되는 interface가 필요하다(context처럼) -->
+<mapper namespace="com.ino.mypage.DAO.MypageDAO"><!-- 그래서 그 인터페이스 지정 -->
+<!-- 이 쿼리는 xml에 저장하고, 쿼리는 자바에서 써야하는데 자바와 xml이 바로 연결하지 못해서 인터페이스를 지정해줌. -->
+
+	<select id="mypage" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT * FROM user WHERE user_id=#{param1}
+	</select>
+
+
+	<select id="mystar" resultType="Integer">
+		SELECT AVG(star_score) FROM star_test_paper
+		WHERE star_no IN (SELECT star_no FROM star s2 WHERE star_to_id=#{param1})
+		<!-- 로그인 기능 넣으면 여기에 where절 넣어서 수정해야함 -->
+	</select>
+	
+	<select id="myrider" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT news,intro,store_time FROM rider_extra WHERE user_id=#{param1}
+	</select>
+	
+	 <select id="saleslist" resultType="com.ino.mypage.dto.MypageDTO">
+      SELECT s.sales_no, s.sales_state, s.subject, s.price, s.sales_sido,
+       s.sigungu, s.hit, s.user_id, u.nickname, s.date, p.new_photo_name,
+        s.biz_id, b.biz_name, s.goods_id, g.goods_name
+      FROM sales s 
+      LEFT JOIN sales s2 ON s2.blind = '0'
+      LEFT JOIN user u ON s.user_id = u.user_id
+      LEFT JOIN photo p ON p.photo_div = s.sales_no AND p.cate_no = 'p005'
+      LEFT JOIN biz b ON s.biz_id = b.biz_id 
+      LEFT JOIN goods g ON s.goods_id = g.goods_id
+      WHERE s.user_id=#{param1}
+      GROUP BY s.sales_no ORDER BY s.sales_no DESC
+   </select>
+   
+   	<select id="galleryList" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT g.gallery_no, g.gallery_subject, g.gallery_hit, g.user_id, u.nickname, g.gallery_date, p.new_photo_name
+			FROM gallery g 
+			LEFT JOIN user u ON g.user_id = u.user_id
+			LEFT JOIN photo p ON p.photo_div = g.gallery_no AND p.cate_no = 'p006'
+			WHERE g.user_id=#{param1}
+			GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+	</select>
+	
+	<select id="interestSaleList" resultType="com.ino.mypage.dto.MypageDTO">
+	      SELECT s.sales_no, s.sales_state, s.subject, s.price, s.sales_sido,
+       s.sigungu, s.hit, s.user_id, u.nickname, s.date, p.new_photo_name,
+        s.biz_id, b.biz_name, s.goods_id, g.goods_name
+      FROM sales s 
+      LEFT JOIN sales s2 ON s2.blind = '0'
+      LEFT JOIN user u ON s.user_id = u.user_id
+      LEFT JOIN photo p ON p.photo_div = s.sales_no AND p.cate_no = 'p005'
+      LEFT JOIN biz b ON s.biz_id = b.biz_id 
+      LEFT JOIN goods g ON s.goods_id = g.goods_id
+      LEFT JOIN attention a ON a.attention_div_no = s.sales_no 
+      WHERE a.user_id=#{param1} AND a.attention_div=#{param2}
+      GROUP BY s.sales_no ORDER BY s.sales_no DESC
+	</select>
+	
+	   	<select id="interestglList" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT g.gallery_no, g.gallery_subject, g.gallery_hit, g.user_id, u.nickname, g.gallery_date, p.new_photo_name
+			FROM gallery g 
+			LEFT JOIN user u ON g.user_id = u.user_id
+			LEFT JOIN photo p ON p.photo_div = g.gallery_no AND p.cate_no = 'p006'
+			LEFT JOIN attention a ON a.attention_div_no = g.gallery_no
+			WHERE a.user_id=#{param1} AND a.attention_div=#{param2}
+			GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+	</select>
+	
+	<select id="countsales" resultType="int">
+		SELECT COUNT(sales_no) FROM sales WHERE user_id=#{param1} 
+	</select>
+	
+	<select id="countgallery" resultType="int">
+		SELECT COUNT(gallery_no) FROM gallery WHERE user_id=#{param1} 
+	</select>
+	
+	<select id="countinterest" resultType="int">
+		SELECT COUNT(attention_no) FROM attention WHERE user_id=#{param1} 
+	</select>
+	
+	<select id="rideroffer" resultType="int">
+	SELECT COUNT(delivery_offer_no) FROM delivery_offer WHERE rider_id=#{param1} 
+	</select>
+	
+		<select id="riderdelivery" resultType="int">
+	SELECT COUNT(delivery_state) from delivery_history dh WHERE dh.delivery_accept_no IN (select delivery_offer_no 
+	FROM delivery_offer where rider_id=#{param1} ) AND delivery_state =#{param2}
+	</select>
+	
+	<select id="star001" resultType="int">
+		SELECT AVG(star_score) FROM star_test_paper stp
+		WHERE star_category_no ='star001' AND stp.star_no in (SELECT star_no FROM star WHERE star_to_id=#{param1})
+	</select>
+	
+	<select id="star002" resultType="int">
+		SELECT AVG(star_score) FROM star_test_paper stp
+		WHERE star_category_no ='star002' AND stp.star_no in (SELECT star_no FROM star WHERE star_to_id=#{param1})
+	</select>
+	
+	<select id="star003" resultType="int">
+		SELECT AVG(star_score) FROM star_test_paper stp
+		WHERE star_category_no ='star003' AND stp.star_no in (SELECT star_no FROM star WHERE star_to_id=#{param1})
+	</select>
+	
+	<select id="riderdetail" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT re.store_time, u.sido, u.sigungu, re.intro, re.news, u.user_id
+		FROM rider_extra re LEFT OUTER JOIN user u
+		ON re.user_id = u.user_id
+		WHERE re.user_id=#{param1}
+	</select>
+	
+	<update id="riderUpdatedo" parameterType="hashmap">
+		UPDATE rider_extra SET store_time=#{store_time}
+		,intro=#{intro}
+		,news=#{news}
+		WHERE user_id=#{user_id}
+	</update>
+	
+	<select id="riderSetting" resultType="com.ino.mypage.dto.MypageDTO">
+		SELECT * FROM user WHERE user_id=#{param1}
+	</select>
+
+	
+	<update id="riderSettingdo" parameterType="hashmap">
+		UPDATE user SET nickname=#{nickname}
+		,user_pw=#{confirm_password}
+		,email=#{email}
+		,phone_num=#{phone_num}
+		,post_num=#{post_num}
+		,sigungu=#{sigungu}
+		,sido=#{sido}
+		,left_addr=#{left_addr}
+		,interest_biz_id=#{interest_biz_id}
+		WHERE user_id=#{user_id}
+	</update>
+	
+	<select id="overlay3" resultType="int">
+		SELECT COUNT(nickname) FROM user
+			WHERE nickname = #{param1}
+	</select>
+	
+	<delete id="fileWrited">
+		DELETE FROM photo WHERE photo_div=#{param3} AND cate_no=#{param4}
+	</delete>
+	
+	<insert id="fileWrite">
+		INSERT INTO photo(ori_photo_name, new_photo_name, photo_div, cate_no)
+		VALUES(#{param1}, #{param2}, #{param3}, #{param4})
+	</insert>
+
+	<select id="getPhotoName" resultType="String">
+		SELECT p.new_photo_name FROM photo p WHERE p.photo_div = #{param1} AND cate_no=#{param2}
+	</select>
+	
+	<select id="userdiv" resultType="String">
+		SELECT user_div FROM user WHERE user_id=#{param1}
+	</select>
+	
+	<insert id="userBizdo" parameterType="hashmap">
+		INSERT INTO auth_extra(user_id,biz_num, biz, store_name, state)
+		VALUES (#{user_id},#{biz_num},#{biz},#{store_name},#{state})
+	</insert>
+	
+	<select id="userBiz" resultType="String">
+	SELECT interest_biz_id FROM user WHERE user_id=#{param1}
+	</select>
+	
+	<update id="userdiv_update">
+	UPDATE user SET user_div ='b' WHERE user_id=#{param1} AND user_div = 'a'
+	</update>
+</mapper>

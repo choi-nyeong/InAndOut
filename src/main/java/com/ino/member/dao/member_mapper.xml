@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- xml 을 java 에서 쓰기 위해 연결되는 interface 가 필요 하다. -->
+<mapper namespace="com.ino.member.dao.MemberDAO">
+
+	<select id="overlay" resultType="int">
+		SELECT COUNT(user_id) FROM user
+			WHERE user_id = #{param1}
+	</select>
+	
+	<select id="overlay2" resultType="int">
+		SELECT COUNT(nickname) FROM user
+			WHERE nickname = #{param1}
+	</select>
+	
+	
+	
+	
+	
+	 
+	<insert id="userRegist" parameterType="hashmap">
+		INSERT INTO user(
+			user_id,user_pw,user_name,nickname,post_num,sido
+			,sigungu,left_addr,phone_num,email,user_state,interest_biz_id,user_div
+		)VALUES(
+			#{user_id},#{user_pw},#{user_name},#{nickname},#{post_num},#{sido}
+			,#{sigungu},#{left_addr},#{phone_num},#{email},#{user_state},#{interest_biz_id}
+			,#{user_div}
+		)
+	</insert>
+	
+	
+	
+
+	
+		<insert id="riderRegist" parameterType="hashmap">
+		INSERT INTO user(
+			user_id,user_pw,user_name,nickname,post_num,sido,sigungu,
+			left_addr,phone_num,email,user_state,interest_biz_id,user_div
+		)VALUES(
+			#{user_id},#{user_pw},#{user_name},#{nickname},#{post_num},#{sido}
+			,#{sigungu},#{left_addr},#{phone_num},#{email},#{user_state},#{interest_biz_id}
+			,#{user_div}
+			
+		)
+	</insert>
+	
+	
+	<insert id="bizregist" >
+		INSERT INTO auth_extra(
+			user_id,biz_num,biz,store_name,state
+			
+		)VALUES(
+			#{param1},#{param2},#{param3},#{param4},#{param5}
+		)
+	</insert>
+	
+	<update id="userChange">
+		UPDATE user SET user_div = #{param2} WHERE user_id = #{param1};
+	</update>
+	
+	
+	
+		<insert id="riderbizregist" >
+		INSERT INTO rider_extra(
+			user_id,biz_num,intro,news,store_time,store_name
+			
+		)VALUES(
+			#{param1},#{param2},#{param3},#{param4},#{param5},#{param6}
+		)
+	</insert>
+	
+	
+	
+	<insert id="join" parameterType="hashmap">
+		INSERT INTO user(
+			user_id,user_pw,user_name,nickname,post_num,
+			left_addr,phone_num,email,user_state,interest_biz_id
+		)VALUES(
+			#{user_id},#{user_pw},#{user_name},#{nickname},#{post_num},#{left_addr}
+			,#{phone_num},#{email},#{user_state},#{interest_biz_id}
+		)
+	</insert>
+	
+	<insert id="fileWrite">
+			INSERT INTO photo(ori_photo_name, new_photo_name,photo_div,cate_no)
+				VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+		
+	<insert id="bizfileWrite">
+		INSERT INTO photo(ori_photo_name, new_photo_name,photo_div,cate_no)
+			VALUES(#{param1},#{param2},#{param3},#{param4})
+	</insert>
+	
+	<select id="login" resultType="int">
+		SELECT COUNT(user_id) FROM user WHERE
+			user_id = #{param1} AND user_pw = #{param2}	
+	</select>
+	
+	
+	<select id="afterList" 
+	resultType="string">
+		SELECT p.new_photo_name FROM photo p 
+		WHERE photo_div = (select user_id from user where user_id = #{param1} and cate_no = 'p001')
+	</select>
+	
+	<select id="userCategory" 
+	resultType="string">
+		SELECT user_div FROM user
+		WHERE user_id =  #{param1}
+	</select>
+	
+	
+	<select id="interest_biz_id" 
+	resultType="string">
+		SELECT interest_biz_id FROM user
+		WHERE user_id =  #{param1}
+	</select>
+	
+	<select id="sigungu" 
+	resultType="string">
+		SELECT sigungu FROM user
+		WHERE user_id =  #{param1}
+	</select>
+	
+	
+	<select id="normalTopList" resultType="com.ino.member.dto.MemberDTO">
+		SELECT  user_id,count(user_id) as 글갯수, hit  , sales_sido, sigungu, p.new_photo_name
+ 		 FROM sales
+ 		 LEFT JOIN photo p on user_id = p.photo_div
+	  		GROUP BY user_id ORDER BY 글갯수 desc limit 5 ;
+	</select>
+	
+	
+	
+	<!--  관심업종 중 조회수 높은 판매글-->
+	<select id="memberAttentionTopList" 
+	resultType="com.ino.member.dto.MemberDTO">
+		SELECT s.sales_no, s.sales_state, s.subject, s.price, s.sales_sido, s.sigungu, s.hit, s.user_id, u.nickname, s.date, p.new_photo_name, s.biz_id, b.biz_name, s.goods_id, g.goods_name
+      FROM sales s 
+      LEFT JOIN sales s2 ON s2.blind = '0'
+      LEFT JOIN user u ON s.user_id = u.user_id
+      LEFT JOIN photo p ON p.photo_div = s.sales_no AND p.cate_no = 'p005'
+      LEFT JOIN biz b ON s.biz_id = b.biz_id 
+      LEFT JOIN goods g ON s.goods_id = g.goods_id 
+      WHERE s.biz_id = #{param1}
+      GROUP BY s.sales_no ORDER BY s.hit desc limit 4
+	</select>
+	
+	<!--  조회수 높은 판매글-->
+	
+	
+	<select id="attentionTopList" 
+	resultType="com.ino.member.dto.MemberDTO">
+	SELECT s.sales_no, s.sales_state, s.subject, s.price, s.sales_sido, s.sigungu, s.hit, s.user_id, u.nickname, s.date, p.new_photo_name, s.biz_id, b.biz_name, s.goods_id, g.goods_name
+      FROM sales s 
+      LEFT JOIN sales s2 ON s2.blind = '0'
+      LEFT JOIN user u ON s.user_id = u.user_id
+      LEFT JOIN photo p ON p.photo_div = s.sales_no AND p.cate_no = 'p005'
+      LEFT JOIN biz b ON s.biz_id = b.biz_id 
+      LEFT JOIN goods g ON s.goods_id = g.goods_id 
+      GROUP BY s.sales_no ORDER BY s.hit desc limit 10;
+      </select>
+	
+	
+	
+	
+	<!--  시군구 중에서 판매글 많은 프로필-->
+	<select id="sigunguTopList" resultType="com.ino.member.dto.MemberDTO">
+		SELECT  s.user_id, count(s.user_id) as 글갯수, s.hit  , s.sales_sido, s.sigungu, p.new_photo_name
+ 		 FROM sales s
+ 		 LEFT JOIN photo p ON user_id = p.photo_div
+ 		 RIGHT JOIN user u ON #{param1} = s.sigungu
+	  		GROUP BY user_id ORDER BY 글갯수 desc limit 5 
+	</select>
+	
+	
+	<!--조회수 높은 갤러리  -->
+	<select id="hitGallery" resultType="com.ino.member.dto.MemberDTO">
+		select g.gallery_no, p.new_photo_name, g.gallery_subject, g.gallery_date, g.gallery_hit
+      	from gallery g
+      	 LEFT JOIN photo p ON p.photo_div = g.gallery_no AND p.cate_no = 'p006'
+    	GROUP BY g.gallery_no ORDER BY g.gallery_hit desc limit 4;
+	</select>
+	
+	
+	<insert id="updateSigungu">
+		INSERT INTO verified_area(user_id,verified_sigungu)
+			VALUES(#{param1},#{param2})
+	</insert>
+	
+	
+	
+	
+	
+</mapper>

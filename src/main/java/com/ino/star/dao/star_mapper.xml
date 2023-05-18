@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.star.dao.StarDAO">
+
+	<select id="getStarList" resultType="com.ino.star.dto.CategoryDTO">
+		SELECT c.cate_no, c.cate_name FROM category c WHERE c.cate_no LIKE 'star%'
+	</select>
+	
+	<select id="salesDetail" parameterType="Integer" resultType="com.ino.sales.dto.SalesDTO">
+		SELECT s.* FROM sales s 
+			WHERE s.sales_no = #{sales_no}
+	</select>
+	
+	<select id="areYouBuyer" parameterType="String" resultType="String">
+		SELECT r.id FROM roomuser r 
+			WHERE roomid = (SELECT roomid FROM chatroom c WHERE msg_div = '판매' AND msg_div_no = #{param1}) 
+		AND id != #{param2}
+	</select>
+	
+	<insert 
+		id="insertStar" 
+		useGeneratedKeys="true"
+		keyColumn="star_no"
+		keyProperty="star_no"
+		parameterType="com.ino.star.dto.StarDTO"
+	>
+		INSERT INTO star(star_to_id, star_div, star_div_no)
+			VALUES(#{star_to_id}, #{star_div}, #{star_div_no})
+	</insert>
+
+	<insert id="insertStarTest">
+		INSERT INTO star_test_paper(star_category_no, star_no, star_score)
+			VALUES(#{param1}, #{param2}, #{param3})
+	</insert>	
+</mapper>

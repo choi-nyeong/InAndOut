@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.gallery.dao.GalleryDAO">
+
+	<select id="GalleryTotalCount" resultType="Integer">
+		SELECT count(g.gallery_no) FROM gallery g WHERE g.blind ='0'
+	</select>
+	
+	<select id="list" resultType="com.ino.gallery.dto.GalleryDTO">
+		SELECT g.gallery_no, g.store_name, g.gallery_subject, g.gallery_hit, g.user_id, u.nickname, g.gallery_date, p.new_photo_name
+			FROM gallery g 
+			LEFT JOIN user u ON g.user_id = u.user_id
+			LEFT JOIN photo p ON p.photo_div = g.gallery_no AND p.cate_no = 'p006'
+		<choose>
+			<when test="param3 == 'gallery_no'">
+		GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+			</when>
+			<when test="param3 == 'gallery_hit'">
+		GROUP BY g.gallery_no ORDER BY g.gallery_hit DESC
+			</when>
+			<otherwise>
+		GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+			</otherwise>
+		</choose>
+		LIMIT #{param1} OFFSET #{param2}
+	</select>
+	
+	<select id="galleryFilteringList" parameterType="String" resultType="com.ino.gallery.dto.GalleryDTO">
+		SELECT g.gallery_no, g.store_name, g.gallery_subject, g.gallery_hit, g.user_id, u.nickname, g.gallery_date, p.new_photo_name
+			FROM gallery g 
+			LEFT JOIN user u ON g.user_id = u.user_id
+			LEFT JOIN photo p ON p.photo_div = g.gallery_no AND p.cate_no = 'p006'
+		<choose>
+			<when test="_parameter == 'gallery_no'">
+		GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+			</when>
+			<when test="_parameter == 'gallery_hit'">
+		GROUP BY g.gallery_no ORDER BY g.gallery_hit DESC
+			</when>
+			<otherwise>
+		GROUP BY g.gallery_no ORDER BY g.gallery_no DESC
+			</otherwise>
+		</choose>
+	</select>
+
+	<insert 
+		useGeneratedKeys="true"
+		keyColumn="gallery_no"
+		keyProperty="gallery_no"
+		id="galleryWrite" parameterType="com.ino.gallery.dto.GalleryDTO"
+	>
+		INSERT INTO gallery(user_id, store_name, gallery_subject, gallery_content, gallery_hit, gallery_jjim)
+			VALUES(#{user_id}, #{store_name}, #{gallery_subject}, #{gallery_content}, 0, 0)
+	</insert>
+	
+	<insert id="fileWrite">
+		INSERT INTO photo(ori_photo_name, new_photo_name, photo_div, cate_no)
+			VALUES(#{param1}, #{param2}, #{param3}, #{param4})
+	</insert>
+	
+	<update id="upHit" parameterType="Integer">
+		UPDATE gallery SET gallery_hit = gallery_hit + 1 WHERE gallery_no = #{gallery_no}
+	</update>
+
+	<select id="galleryDetail" parameterType="Integer" resultType="com.ino.gallery.dto.GalleryDTO">
+		select g.*, u.nickname from gallery g
+		inner join `user` u on u.user_id = g.user_id and g.gallery_no = #{gallery_no}
+	</select>
+
+	<select id="galleryDetailPhoto" parameterType="Integer" resultType="String">
+		SELECT p.new_photo_name FROM photo p 
+			INNER JOIN gallery g ON g.gallery_no = p.photo_div 
+		AND p.cate_no = 'p006' AND g.gallery_no = #{gallery_no}
+	</select>
+	
+	<select id="attentionCheck" resultType="Integer">
+		SELECT count(a.attention_no) FROM attention a WHERE a.attention_div = '갤러리' AND a.attention_div_no = #{param2} AND a.user_id = #{param1}
+	</select>
+	
+	<insert id="addAttention">
+		INSERT INTO attention(attention_div_no, attention_div, user_id)VALUES(#{param2}, '갤러리', #{param1})
+	</insert>
+	
+	<update id="addGalleryAttention">
+		UPDATE gallery SET gallery_jjim = gallery_jjim + 1 WHERE gallery_no = #{param1}
+	</update>
+	
+	<delete id="removeAttention">
+		DELETE FROM attention WHERE attention_div_no = #{param2} AND attention_div = '갤러리' AND user_id = #{param1}	
+	</delete>
+	
+	<update id="removeGalleryAttention">
+		UPDATE gallery SET gallery_jjim = gallery_jjim - 1 WHERE gallery_no = #{param1}
+	</update>
+	
+	<delete id="galleryDelete">
+		DELETE FROM gallery WHERE gallery_no = #{param1}
+	</delete>
+	
+	<select id="galleryHasFile" parameterType="String" resultType="String">
+		SELECT p.new_photo_name FROM photo p
+			LEFT JOIN gallery g ON p.photo_div = g.gallery_no 
+		WHERE p.cate_no ='p006' AND p.photo_div = #{gallery_no}
+	</select>
+	
+	<delete id="removeFileName" parameterType="String">
+		DELETE FROM photo WHERE new_photo_name = #{fileName} AND cate_no = 'p006'
+	</delete>
+	
+	<update id="galleryUpdate" parameterType="HashMap">
+		UPDATE gallery SET gallery_subject = #{gallery_subject}
+			,store_name = #{store_name}
+			,gallery_content = #{gallery_content}
+		WHERE gallery_no = #{gallery_no}
+	</update>
+
+</mapper>

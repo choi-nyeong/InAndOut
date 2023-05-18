@@ -1,0 +1,557 @@
+@charset "UTF-8";
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.profile-box {
+    width: 200px;
+    height: 430px;
+    position: absolute;
+    left: 30px;
+    top: 100px;
+    border: 2px gray solid;
+    z-index: -1;
+}
+.profile-box img{
+		width: 150px;
+    position: relative;
+    left: 23px;
+    top: 15px;
+}
+.title-name,.title-nickname {
+		
+    margin: 20px;
+    text-align: center;
+    font-family: "Noto Sans Kr";
+    top: 80px;
+}
+.content {
+/*    margin: 20px;*/
+    position: absolute;
+    top: 320px;
+    left: 50px;
+    line-height: 1.5;
+    text-align: justify;
+    z-index: -1;
+}
+
+.content>img{
+		position: relative;
+    margin-top: 52px;
+    font-family: "Noto Sans Kr";
+    font-size: 18px;
+    left: 56px;
+    z-index: -1;
+    
+}.content2>img{
+		position: absolute;
+    font-family: "Noto Sans Kr";
+    font-size: 18px;
+    top:300px;
+    left: 90px;
+    z-index: -1;
+}
+.content2:hover + #avgdolphin {
+  display: block;
+  opacity: 1;
+}
+#avgdolphin{
+	position: absolute;
+    top: 398px;
+    left: 156px;
+    z-index: 1;
+    display: none;
+    opacity: 0;
+    transition: all ease-out 1s;
+    font-size: 11px;
+    background: skyblue;
+    color: white;
+ 
+}
+.content:hover + #avgdolphin {
+  display: block;
+  opacity: 1;
+}
+
+.parent{
+	    width: 90%;
+	    margin: 10px auto;
+	    z-index: -1;
+	}
+
+	.pfirst {
+	  position: absolute;
+    top: 450px;
+    left: 45px;
+	}
+	
+	.psecond{
+	  position: absolute;
+    top: 450px;
+    left: 102px;
+	}
+
+	.pthird{
+	  position: absolute;
+    top: 450px;
+    left: 158px;
+	}
+	
+	.child{
+	  width: 90%;
+	  margin: 10px auto;
+	  top: 50px;
+	  z-index: -1;
+	}
+
+	.cfirst {
+	  position: absolute;
+    top: 480px;
+    left: 60px;
+	}
+	
+	.csecond {
+    position: absolute;
+    top: 480px;
+    left: 118px;
+    
+	}
+
+	.cthird {
+    position: absolute;
+    top: 480px;
+    left: 183px;
+	}
+	.bfirst{
+		position: absolute;
+    top: 450px;
+    left: 58px;
+	}
+	.bsecond{
+		position: absolute;
+    top: 450px;
+    left: 136px;
+	}
+	.bthird{
+		position: absolute;
+    top: 480px;
+    left: 79px;
+	}
+	.bfourth{
+		position: absolute;
+    top: 480px;
+    left: 159px;
+	}
+	
+	#nav {
+  position: fixed;
+  top: 62px;
+  left: 231px;
+  width: 70%;
+  padding: 50px;
+  background-color: white;
+  padding
+
+}
+
+#nav a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 10px;
+  padding: 5px;
+}
+
+#nav a:hover {
+  color:#87CEEB
+  text-decoration: underline;
+}
+
+#userauth {
+  position: fixed;
+  top: 150px;
+  left: 800px;
+  width: 23%;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: none;
+}
+
+#userauth a {
+  color: #333;
+  text-decoration: none;
+  margin-right: 10px;
+  padding: 5px;
+}
+
+#nav:hover + #userauth,
+#userauth:hover {
+  display: block;
+}
+	
+	
+		#nav a:visited{
+			color:gray;
+		}
+		#userauth a:visited{
+			color:gray;
+		}
+		
+		header {
+			 position: absolute;
+		  top: 80px;
+		  /* width: 100% */
+		  left: 350px;
+		  right: 0;
+		  height: 75px;
+		  padding: 1rem;
+		  color: white;
+		  font-weight: bold;
+		  display: flex;
+		  justify-content: space-between;
+		  align-items: center;
+		  word-spacing: 20px;
+		  z-index: 0;
+
+		}
+		
+		#article {
+   width:1000px;
+   margin-left: 450px;
+   
+}
+		
+		#runtime{
+		position: absolute;
+    height: 50px;
+    width: 250px;
+    z-index: -1;
+    margin: -100px 0px 0px -200px;
+    top: 50%;
+    left: 40%;
+    padding: 5px;
+		}
+		
+		#runtime2{
+		margin-bottom: 15px;
+		}
+		
+		#location{
+		position: absolute;
+		height: 50px;
+    width: 350px;
+    z-index: -1;
+		margin: -105px 0px 0px -200px;
+		top: 50%;
+		left: 70%;
+		padding: 5px;
+		}
+		#location2{
+		margin-bottom: 15px;
+		}
+		#intro2{
+		margin-bottom: 15px;
+		}
+		#news2{
+		margin-bottom: 15px;
+		}
+		#intro{
+		position: absolute;
+		height: 50px;
+    width: 250px;
+    z-index: -1;
+		margin: -90px 0px 0px -200px;
+		top: 30%;
+		left: 40%;
+		padding: 5px;
+		}
+		
+		#news{
+		position: absolute;
+    height: 50px;
+    width: 250px;
+    z-index: -1;
+    margin: -90px 0px 0px -200px;
+    top: 30%;
+    left: 70%;
+    padding: 5px;
+		}
+		
+		#userdetailsales{
+		position: absolute;
+		height: 70%;
+		width: 70%;
+		margin: -140px 0px 0px -200px;
+		top: 40%;
+		left: 35%;
+		padding: 5px;
+		z-index: -1;
+		}
+		
+		#userdetailgallery{
+		position: absolute;
+		height: 70%;
+		width: 70%;
+		margin: -100px 0px 0px -200px;
+		top: 100%;
+		left: 35%;
+		padding: 5px;
+		z-index: -1;
+		}
+
+		#star001{
+		position: absolute;
+		height: 70%;
+		width: 70%;
+		margin: 0px 0px 0px -200px;
+		top: 70%;
+		left: 40%;
+		padding: 5px;
+		}
+		#star002{
+		position: absolute;
+		height: 70%;
+		width: 70%;
+		margin: 90px 0px 0px -200px;
+		top: 70%;
+		left: 40%;
+		padding: 5px;
+		}
+		#star003{
+		position: absolute;
+		height: 70%;
+		width: 70%;
+		margin: 150px 0px 0px -200px;
+		top: 70%;
+		left: 40%;
+		padding: 5px;
+		}
+
+		input.updatebutton {
+		top: 40%;
+    left: 70%;
+    position: absolute;
+    color: white;
+    background: skyblue;
+    border: 1px #3079ED solid;
+    padding: 5px;
+    border-radius: 10%;
+
+		}
+		
+		input.updatebutton:hover {
+		    border: 1px #2F5BB7 solid;
+		    box-shadow: 0 1px 1px #EAEAEA, inset 0 1px 0 #5A94F1;
+		    background: #3F83F1;
+		}
+		
+		button.updatebutton:active {
+		    box-shadow: inset 0 2px 5px #2370FE;   
+		}
+		
+		#rdupdate{
+			position: absolute;
+			top: 200px;
+    left: 650px;
+    z-index: -1;
+		}
+		#rdidupdate{
+		position: absolute;
+    top: 250px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdnnupdate{
+		position: absolute;
+    top: 280px;
+    left: 620px;
+    z-index: -1;
+		}
+		#storename{
+		position: absolute;
+    top: 205px;
+    left: 448px;
+    z-index: -1;
+		}
+		#biznum{
+			    position: absolute;
+    top: 255px;
+    left: 448px;
+    z-index: -1;
+		}
+		#riderAuth{
+			position: absolute;
+			top: 260px;
+			left: 630px;
+			z-index: -1;
+		}
+		#oripassword{
+		position: absolute;
+    top: 310px;
+    left: 638px;
+    z-index: -1;
+		}
+		#rdpwupdate{
+		position: absolute;
+    top: 340px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdpwupdatecheck{
+		position: absolute;
+    top: 370px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdaddrupdate{
+		position: absolute;
+    top: 400px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdsaddrupdate{
+		position: absolute;
+    top: 430px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdemailupdate{
+		position: absolute;
+    top: 480px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdphupdate{
+		position: absolute;
+    top: 510px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdinterestupdate{
+		position: absolute;
+    top: 540px;
+    left: 620px;
+    z-index: -1;
+		}
+		#rdphotoupdate{
+		position: absolute;
+    top: 570px;
+    left: 620px;
+    z-index: -1;
+		}
+		
+	#riderupdatebutton{
+		position: absolute;
+    top: 550px;
+    left: 640px;
+    z-index: -1;
+    color: white;
+    background: skyblue;
+    border: 1px #3079ED solid;
+    padding: 5px;
+    border-radius: 10%;
+		}
+		#riderupdatebutton1{
+		position: absolute;
+    top: 550px;
+    left: 580px;
+    z-index: -1;
+    color: white;
+    background: skyblue;
+    border: 1px #3079ED solid;
+    padding: 5px;
+    border-radius: 10%;
+		}
+		
+		#pwcheck1{
+				position: absolute;
+    top: 400px;
+    left: 720px;
+    z-index: -1;
+    color: white;
+    background: skyblue;
+    border: 1px #3079ED solid;
+    padding: 5px;
+    border-radius: 10%;
+		}
+		#pwcheck{
+				position: absolute;
+    top: 400px;
+    left: 670px;
+    z-index: -1;
+    color: white;
+    background: skyblue;
+    border: 1px #3079ED solid;
+    padding: 5px;
+    border-radius: 10%;
+		}
+	#riderupdatebutton2{
+		position: absolute;
+			top: 60%;
+			left: 55%;
+	}
+	#riderupdatebutton3{
+		position: absolute;
+    top: 850px;
+    left: 700px;
+    z-index: -1;
+		}
+	#riderupdatebutton4{
+		position: absolute;
+    top: 850px;
+    left: 650px;
+    z-index: -1;
+		}
+	#star001pic{
+	width: 100px;
+	}
+	
+	#bizauthphoto{
+		position: absolute;
+    top: 305px;
+    left: 448px;
+	}
+	
+	.profile-box img,
+#userdetailsales img,
+#userdetailgallery img {
+  border-radius: 2%;
+}
+
+img {
+  transition: transform 0.4s ease, box-shadow 0.3s ease;
+}
+
+img:hover {
+  transform: scale(1) translateY(-5px);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+  			#findPost{
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;  
+            
+            margin-right:-4px;
+             font-family: 'Noto Sans KR', sans-serif;
+             font-size: 13px;
+            
+        }
+       
+        #findPost{
+            border: 1px solid #227cff;
+            background-color: #227cff;
+            color: white;
+            padding: 5px 10px 5px 10px;
+            font: 'Noto Sans KR', sans-serif;
+        }
+        #findPost:hover{
+            color:white;
+            background-color: #3788fd;
+        }
+        
+
+

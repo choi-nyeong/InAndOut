@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.report.dao.ReportDAO">
+		
+	<insert id="salesReportWrite" parameterType="HashMap">
+		INSERT INTO report(user_id, cate_no, report_reason, report_state, report_whom)
+			VALUES(#{user_id},'s002',#{report_reason},'대기',#{report_whom})
+	</insert>
+
+	<insert id="galleryReportWrite" parameterType="HashMap">
+		INSERT INTO report(user_id, cate_no, report_reason, report_state, report_whom)
+			VALUES(#{user_id},'s001',#{report_reason},'대기',#{report_whom})
+	</insert>
+
+</mapper>

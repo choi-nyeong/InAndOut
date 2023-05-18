@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC	"-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+<!-- xml 을 java 에서 쓰기 위해 연결되는 interface 가 필요 하다. -->
+<mapper namespace="com.ino.chat.dao.ChatDAO">
+	<select id="list" resultType="com.ino.chat.dto.ChatDTO">
+		select * from chatroom where roomid in 
+		(select roomid from roomuser where id = #{param1}) order by recent_time desc
+	</select>
+	
+	<select id="riderlist" resultType="com.ino.member.dto.MemberDTO">
+		select * from user u LEFT JOIN photo p ON p.photo_div = u.user_id and p.cate_no = 'p001'
+		where sigungu = (select sigungu from user where user_id = #{param1}) and user_div = 'c'
+	</select>
+	
+	<select id="msglist" resultType="com.ino.chat.dto.MsgDTO">
+		select * from chatmsg c LEFT JOIN photo p ON p.photo_div = c.msg_no and p.cate_no = 'p004'
+		where roomid = #{param1} order by msg_no
+	</select>
+	
+	<select id="userlist" resultType="String">
+		select id from roomuser where roomid = #{param1}
+	</select>
+	
+	<insert id="msgsend" parameterType="HashMap">
+		insert into chatmsg(from_id, msg_content, roomid)
+			values(
+				#{id}, #{msg}, #{roomid}
+			)
+	</insert>
+	
+	<update id="recentmsg" parameterType="HashMap">
+		update chatroom set recent_msg=#{msg} where roomid = #{roomid}
+	</update>
+	
+	<update id="recentmsgno" parameterType="HashMap">
+		update chatroom set recent_no=(select max(msg_no)
+		from chatmsg where roomid = #{roomid}) where roomid = #{roomid}
+	</update>
+	
+	<update id="recentmsgtime" parameterType="HashMap">
+		update chatroom set recent_time=(select max(from_time)
+		from chatmsg where roomid = #{roomid}) where roomid = #{roomid}
+	</update>
+	
+	<insert id="newchat" parameterType="String">
+		insert into chatroom(roomname, msg_div, msg_div_no, recent_msg, recent_no)
+			values(#{param2},"판매",#{param1}, "", 999999999)
+	</insert>
+	
+	<insert id="newchat2" parameterType="String">
+		insert into chatroom(roomname, msg_div, msg_div_no, recent_msg, recent_no)
+			values(#{param2},"배송",#{param1}, "", 999999999)
+	</insert>
+	
+	<select id="lastroom" resultType="Int">
+		select MAX(roomid) from chatroom
+	</select>
+	
+	<insert id="roomjoin">
+		insert into roomuser(roomid, id) values(#{param1}, #{param2})
+	</insert>
+	
+	<select id="salephoto" resultType="String">
+		select new_photo_name from photo
+		where cate_no = 'p005' and photo_div = #{param1} limit 1
+	</select>
+	
+	<select id="getsalephotobydelivery" resultType="String">
+		select new_photo_name from photo
+		where cate_no = 'p005' and photo_div = 
+		(select sales_no from delivery_offer do where  delivery_offer_no = #{param1}) limit 1
+	</select>
+	
+	<select id="userphoto" resultType="String">
+		select new_photo_name from photo
+		where cate_no = 'p001' and photo_div = #{param1}
+	</select>
+	
+	<select id="issale" resultType="String">
+		select msg_div from chatroom where roomid = #{param1}
+	</select>
+	
+	<select id="salenum" resultType="Int">
+		select msg_div_no from chatroom where roomid = #{param1}
+	</select>
+	
+	<select id="salenum2" resultType="Int">
+		select sales_no from delivery_offer do
+		where delivery_offer_no = (select msg_div_no from chatroom where roomid = #{param1})
+	</select>
+	 
+	 <select id="getdelivery" resultType="com.ino.delivery.dto.RiderDTO">
+		select * from delivery_offer do LEFT JOIN delivery_history dh ON do.delivery_offer_no = dh.delivery_accept_no where do.delivery_offer_no = #{param1} order by delivery_time desc limit 1
+	</select>
+	
+	<select id="msgsale" resultType="com.ino.sales.dto.SalesDTO">
+		select * from sales where sales_no = #{param1}
+	</select>
+	
+	<select id="msguser" resultType="String">
+		select id from roomuser r where roomid = #{param1} and id != #{param2};
+	</select>
+	
+	<select id="username" resultType="com.ino.member.dto.MemberDTO">
+		select * from user where user_id = #{param1}
+	</select>
+	
+	<update id="chatsaledone">
+		update sales set sales_state='판매완료' where sales_no = #{param1}
+	</update>
+	
+	<select id="findroomuser" resultType="String">
+		select roomid from roomuser where id = #{param1} and roomid in (select roomid from chatroom where msg_div='판매' and msg_div_no = #{param2});
+	</select>
+	
+	<select id="findroomuser2" resultType="String">
+		select roomid from roomuser where id = #{param1} and roomid in (select roomid from chatroom where msg_div='배송' and msg_div_no = #{param2});
+	</select>
+	
+	<select id="offergetuserid" resultType="String">
+		select user_id from delivery_offer do where delivery_offer_no = #{param1}
+	</select>
+	
+	<insert
+		useGeneratedKeys="true"
+		keyColumn="msg_no"
+		keyProperty="msg_no"
+	 	id="chatmsgsend" parameterType="com.ino.chat.dto.MsgDTO"
+	 >
+	 	insert into chatmsg(from_id, msg_content, roomid)
+			values(
+				#{from_id}, #{msg_content}, #{roomid}
+			)
+	 </insert>
+</mapper>

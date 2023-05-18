@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"
+>
+
+<mapper namespace="com.ino.admin.dao.AdminCategoryDAO">
+
+	
+	<select id="ctotalCount" parameterType="String" resultType ="int">
+			SELECT SUM(count)
+			FROM (
+			  SELECT COUNT(biz_id) AS count FROM biz
+			) AS subquery;
+
+	</select>
+
+	<select id="gtotalCount" parameterType="String" resultType ="int">
+			SELECT SUM(count)
+			FROM (
+			  SELECT COUNT(biz_id) AS count FROM biz
+			  UNION ALL
+			  SELECT COUNT(goods_id) AS count FROM goods
+			) AS subquery;
+
+	</select>
+
+	<select id="glist" resultType="com.ino.admin.dto.AdminCategoryDTO">
+		SELECT b.biz_id, b.biz_name, g.goods_id, g.goods_name 
+		FROM biz b
+		JOIN goods g ON b.biz_id = g.biz_id
+		ORDER BY 1
+		LIMIT 10 OFFSET #{offset}
+	</select>	
+
+	<select id="clist" resultType="com.ino.admin.dto.AdminCategoryDTO">
+		SELECT b.biz_id, b.biz_name
+		FROM biz b
+		ORDER BY 1
+		LIMIT 10 OFFSET #{offset}
+	</select>	
+
+	<select id="goodsdetail" resultType="com.ino.admin.dto.AdminCategoryDTO">
+		SELECT b.biz_id, b.biz_name, g.goods_id, g.goods_name 
+		FROM biz b
+		JOIN goods g ON b.biz_id = g.biz_id
+		WHERE goods_id = #{goods_id}
+	
+	</select>
+	
+	<update id="goodsupdate" parameterType="hashmap">
+		UPDATE goods SET
+		goods_name = #{goods_name}
+		WHERE goods_id = #{goods_id}
+	</update>
+
+
+</mapper>
